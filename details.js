@@ -1,4 +1,10 @@
-// TMDB API KEY
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+if (!id) {
+  document.body.innerHTML = "Something went wrong";
+  throw new Error("No ID found");
+}// TMDB API KEY
 const API_KEY = "61790ec4b30862edcf008c304cfce00a";
 
 // Get details container
