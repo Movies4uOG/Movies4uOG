@@ -1,59 +1,49 @@
+const API_KEY = "61790ec4b30862edcf008c304cfce00a";
+const detailsDiv = document.getElementById("details");
+
+const movieLinks = {
+  575588: "https://example.com/conjuring-1080p",
+  123456: "https://example.com/another-movie-1080p"
+};
+
 const params = new URLSearchParams(window.location.search);
+const type = params.get("type");
 const id = params.get("id");
 
 if (!id) {
-  document.body.innerHTML = "Something went wrong";
+  detailsDiv.innerHTML = "<p>No movie ID found</p>";
   throw new Error("No ID found");
-}// TMDB API KEY
-const API_KEY = "61790ec4b30862edcf008c304cfce00a";
+}
 
-// Get details container
-const detailsDiv = document.getElementById("details");
-
-// Read URL parameters
-const params = new URLSearchParams(window.location.search);
-const type = params.get("type"); // movie or tv
-const id = params.get("id");     // TMDB ID
-
-// Fetch details from TMDB
 fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}&language=en-IN`)
-  .then(response => response.json())
+  .then(res => res.json())
   .then(data => {
 
-    // Find custom link for this movie/webseries
-    const custom = customData.find(
-      item => item.id == id && item.type === type
-    );
-
-    // Prepare 1080p link button
     let linkHTML = "";
-    if (custom && custom.link1080p) {
+
+    if (movieLinks[id]) {
       linkHTML = `
-        <a class="link-btn" href="${custom.link1080p}" target="_blank">
-          Watch / Download 1080p
+        <a class="link-btn" href="${movieLinks[id]}" target="_blank">
+          Download 1080p
         </a>
       `;
     } else {
-      linkHTML = `<p>1080p link not available</p>`;
+      linkHTML = "<p>1080p link not available</p>";
     }
 
-    // Show details on page
     detailsDiv.innerHTML = `
       <div class="details-card">
         <img src="https://image.tmdb.org/t/p/w500${data.poster_path}" alt="Poster">
 
         <h2>${type === "movie" ? data.title : data.name}</h2>
-
-        <p><b>Rating:</b> ⭐ ${data.vote_average}</p>
-
         <p>${data.overview}</p>
 
-        <h3>1080p Link</h3>
+        <h3>Download Link</h3>
         ${linkHTML}
       </div>
     `;
   })
-  .catch(error => {
-    detailsDiv.innerHTML = "<p>Something went wrong. Please try again.</p>";
-    console.error(error);
+  .catch(err => {
+    detailsDiv.innerHTML = "<p>Something went wrong, please try again.</p>";
+    console.error(err);
   });
