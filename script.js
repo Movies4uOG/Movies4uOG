@@ -36,7 +36,7 @@ function showMovies(list, type) {
     `;
 
     div.addEventListener("click", () => {
-      window.location.href = `details.html?type=${type}&id=${item.id}`;
+      window.location<a href="details.html?id=${item.id}&type=movie">
     });
 
     moviesDiv.appendChild(div);
