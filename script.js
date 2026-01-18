@@ -12,8 +12,8 @@ function fetchData(type, query = "") {
     url = `https://api.themoviedb.org/3/search/${type}?api_key=${API_KEY}&language=en-IN&query=${query}`;
   } else {
     url = type === "movie"
-      ? `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-IN&sort_by=popularity.desc`
-      : `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-IN`;
+      ? `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=hi&region=IN&sort_by=popularity.desc`
+      : `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&with_original_language=hi&region=IN&sort_by=popularity.desc`;
   }
 
   fetch(url)
